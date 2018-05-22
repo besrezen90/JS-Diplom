@@ -42,15 +42,17 @@ class Actor {
     return this.pos.y + this.size.y
   }
   get type() {
-    return actor.toString()
+    return "actor"
   }
-//   isIntersect(actor) {
-//     if (this === actor) {
-//       return false
-//     } else if (actor === undefined || Actor.prototype.isPrototypeOf(actor)){
-//       return false
-//     } else if (asdasdsad)
-//   }
+  isIntersect(actor) {
+    if (this === actor) {
+      return false
+    } else if (actor === undefined || Actor.prototype.isPrototypeOf(actor)){
+      return false
+    } else if (actor.left <= this.right || actor.right >= this.left || actor.top >= this.bottom || actor.bottom <= this.top) {
+        return true
+    }
+  }
 }
 
 
