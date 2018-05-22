@@ -52,18 +52,13 @@ class Actor {
 }
 //Создаем класс Level
 class Level {
-    constructor(grid = [], actor = []) {
+    constructor(grid, actor) {
         this.grid = grid
         this.actor = actor
         if (this.actor instanceof Actor) this.player = actor.type
         if (!(this.grid === undefined)) {
             this.height = this.grid.length
-            this.width = 0;
-            // for (let el of this.grid) {
-            //     if (el.length > this.width) {
-            //         this.width = el.length
-            //     }
-            // }
+            this.width
         } else {
             this.width = 0
             this.height = 0
