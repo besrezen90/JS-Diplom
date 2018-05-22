@@ -1,5 +1,5 @@
 'use strict';
-//Создаем объект Vector
+//Создаем класс Vector
 class Vector {
     constructor(x = 0, y = 0) {
         this.x = x;
@@ -17,7 +17,7 @@ class Vector {
         return new Vector(this.x * mn, this.y * mn)
     }
 }
-//Создаем объект Actor
+//Создаем класс Actor
 class Actor {
     constructor(pos = new Vector(), size = new Vector(1, 1), speed = new Vector()) {
         if (Vector.prototype.isPrototypeOf(pos) && Vector.prototype.isPrototypeOf(size) && Vector.prototype.isPrototypeOf(speed)) {
@@ -50,5 +50,23 @@ class Actor {
         else return true
     }
 }
-
-
+//Создаем класс Level
+class Level {
+    constructor(grid = [], actor = []) {
+        this.grid = grid
+        this.actor = actor
+        if (this.actor instanceof Actor) this.player = actor.type
+        if (!(this.grid === undefined)) {
+            this.height = this.grid.length
+            this.width = 0;
+            // for (let el of this.grid) {
+            //     if (el.length > this.width) {
+            //         this.width = el.length
+            //     }
+            // }
+        } else {
+            this.width = 0
+            this.height = 0
+        }
+    }
+}
