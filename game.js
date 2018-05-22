@@ -44,11 +44,13 @@ class Actor {
   get type() {
     return actor.toString()
   }
-  isIntersect(actor) {
-    if (this === actor) {
-      return false
-    } else if (actor === undefined || Actor.prototype.isPrototypeOf(actor)){
-      return false
-    } else if ()
-  }
+//   isIntersect(actor) {
+//     if (this === actor) {
+//       return false
+//     } else if (actor === undefined || Actor.prototype.isPrototypeOf(actor)){
+//       return false
+//     } else if (asdasdsad)
+//   }
 }
+
+
