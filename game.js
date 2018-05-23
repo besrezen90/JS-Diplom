@@ -52,16 +52,30 @@ class Actor {
 }
 //Создаем класс Level
 class Level {
-    constructor(grid, actor) {
+    constructor(grid, actors) {
         this.grid = grid
-        this.actor = actor
-        if (this.actor instanceof Actor) this.player = actor.type
+        this.actors = actors
+        this.status = null
+        this.finishDelay = 1
         if (!(this.grid === undefined)) {
             this.height = this.grid.length
-            this.width
+            this.width = this.grid.reduce(function(memo, el){
+                if (el.length > memo) {
+                memo = el.length
+                }
+                return memo       
+            }, 0)
         } else {
             this.width = 0
             this.height = 0
+        }
+        if(this.actors) {
+            this.player = this.actors.reduce(function(memo, el){
+            if(el.type === "player") {
+              memo = el
+            }
+            return memo
+        }, 0)
         }
     }
 }
