@@ -95,5 +95,17 @@ class Level {
             return this.actors.find((el) => el.isIntersect(actor))
         }
     }
+    obstacleAt(direction, size) {
+        if (!(direction instanceof Vector)) {
+            throw new TypeError(`${direction} не принадлежит классу Vector`)
+        } else if (!(size instanceof Vector)) {
+            throw new TypeError(`${size} не принадлежит классу Vector`)
+        }
+        const newobj = new Actor(direction, size);
+        if (newobj.bottom > this.height) return "lava"
+        if (newobj.top < 0 || newobj.left < 0 || newobj.right > this.width) return "wall"
+        else {
+            return this.actorAt(newobj)
+        }
+    }
 }
-
