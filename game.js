@@ -94,6 +94,5 @@ class Level {
         } else if (this.actors.find((el) => el.isIntersect(actor))) {
             return this.actors.find((el) => el.isIntersect(actor))
         }
-
     }
 }
