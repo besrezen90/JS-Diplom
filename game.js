@@ -59,23 +59,41 @@ class Level {
         this.finishDelay = 1
         if (!(this.grid === undefined)) {
             this.height = this.grid.length
-            this.width = this.grid.reduce(function(memo, el){
+            this.width = this.grid.reduce(function (memo, el) {
                 if (el.length > memo) {
-                memo = el.length
+                    memo = el.length
                 }
-                return memo       
+                return memo
             }, 0)
         } else {
             this.width = 0
             this.height = 0
         }
-        if(this.actors) {
-            this.player = this.actors.reduce(function(memo, el){
-            if(el.type === "player") {
-              memo = el
-            }
-            return memo
-        }, 0)
+        if (this.actors) {
+            this.player = this.actors.reduce(function (memo, el) {
+                if (el.type === "player") {
+                    memo = el
+                }
+                return memo
+            }, 0)
         }
+    }
+    isFinished() {
+        if (!(this.status === null) && (this.finishDelay < 0)) {
+            return true
+        } else return false
+    }
+    actorAt(actor) {
+        if (actor.speed === 0) {
+            throw new TypeError(`${actor} не является движущимся объектом`)
+        } else if (actor === undefined) {
+            throw new Error(`Объект не может быть пустым`)
+        }
+        if (this.actors === undefined || this.actors.length < 1) {
+            return undefined
+        } else if (this.actors.find((el) => el.isIntersect(actor))) {
+            return this.actors.find((el) => el.isIntersect(actor))
+        }
+
     }
 }
