@@ -113,4 +113,9 @@ class Level {
         }
 
     }
+    removeActor(actor) {
+        if (this.actors.indexOf(actor) >= 0) {
+            this.actors.splice(this.actors.indexOf(actor), 1);
+        }
+    }
 }
