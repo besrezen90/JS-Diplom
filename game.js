@@ -52,7 +52,7 @@ class Actor {
 }
 //Создаем класс Level
 class Level {
-    constructor(grid, actors) {
+    constructor(grid = [], actors = []) {
         this.grid = grid
         this.actors = actors
         this.status = null
@@ -84,15 +84,16 @@ class Level {
         } else return false
     }
     actorAt(actor) {
-        if (actor.speed === 0) {
-            throw new TypeError(`${actor} не является движущимся объектом`)
-        } else if (actor === undefined) {
-            throw new Error(`Объект не может быть пустым`)
+        if (actor === undefined || !(actor instanceof Actor)) {
+            throw new TypeError(`Не передан движущийся объект`)
         }
-        if (this.actors === undefined || this.actors.length < 1) {
-            return undefined
-        } else if (this.actors.find((el) => el.isIntersect(actor))) {
-            return this.actors.find((el) => el.isIntersect(actor))
+        if (this.actors.find(el => el.isIntersect(actor))) {
+            return this.actors.reduce(function (memo, el) {
+                if (el.isIntersect(actor)) {
+                    memo = el
+                }
+                return memo
+            }, 0)
         }
     }
     obstacleAt(direction, size) {
@@ -128,15 +129,17 @@ class Level {
         return true
     }
     playerTouched(type, actor) {
+        if (this.status !== null) {
+            return;
+        }
         if (type === "lava" || type === "fireball") {
             return this.status = "lost"
         }
-        if (type === "coin" && actor instanceof Actor) {
+        if (type === "coin" && actor.type === "coin") {
             this.removeActor(actor)
-            if (this.noMoreActors(actor)) {
+            if (this.noMoreActors("coin")) {
                 return this.status = "won"
             }
         }
     }
-
 }
