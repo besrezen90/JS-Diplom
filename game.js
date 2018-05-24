@@ -88,12 +88,7 @@ class Level {
             throw new TypeError(`Не передан движущийся объект`)
         }
         if (this.actors.find(el => el.isIntersect(actor))) {
-            return this.actors.reduce(function (memo, el) {
-                if (el.isIntersect(actor)) {
-                    memo = el
-                }
-                return memo
-            }, 0)
+            return this.actors.find(el => el.isIntersect(actor))
         }
     }
     obstacleAt(direction, size) {
