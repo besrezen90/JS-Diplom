@@ -120,11 +120,23 @@ class Level {
     }
     noMoreActors(type) {
         if (this.actors === undefined) return true
-        for(let actor of this.actors) {
+        for (let actor of this.actors) {
             if (actor.type === type) {
                 return false
             }
         }
-        return true 
+        return true
     }
+    playerTouched(type, actor) {
+        if (type === "lava" || type === "fireball") {
+            return this.status = "lost"
+        }
+        if (type === "coin" && actor instanceof Actor) {
+            this.removeActor(actor)
+            if (this.noMoreActors(actor)) {
+                return this.status = "won"
+            }
+        }
+    }
+
 }
