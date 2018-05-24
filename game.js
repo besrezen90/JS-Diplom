@@ -118,4 +118,13 @@ class Level {
             this.actors.splice(this.actors.indexOf(actor), 1);
         }
     }
+    noMoreActors(type) {
+        if (this.actors === undefined) return true
+        for(let actor of this.actors) {
+            if (actor.type === type) {
+                return false
+            }
+        }
+        return true 
+    }
 }
