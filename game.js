@@ -102,10 +102,15 @@ class Level {
             throw new TypeError(`${size} не принадлежит классу Vector`)
         }
         const newobj = new Actor(direction, size);
-        if (newobj.bottom > this.height) return "lava"
-        if (newobj.top < 0 || newobj.left < 0 || newobj.right > this.width) return "wall"
-        else {
-            return this.actorAt(newobj)
+        if (Math.ceil(newobj.bottom) > this.height) return "lava"
+        if (Math.floor(newobj.top) < 0 || Math.floor(newobj.left) < 0 || Math.ceil(newobj.right) > this.width) return "wall"
+        for (let y = 1; y < this.height; y++) {
+            for (let x = 1; x < this.width; x++) {
+                if (this.grid) {
+                    return this.grid[y][x]
+                }
+            }
         }
+
     }
 }
