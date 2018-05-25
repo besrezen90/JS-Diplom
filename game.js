@@ -150,8 +150,21 @@ class LevelParser {
         else return undefined
     }
     obstacleFromSymbol(key) {
-        if(key === "x") return "wall"
-        if(key === "!") return "lava"
+        if (key === "x") return "wall"
+        if (key === "!") return "lava"
         else return undefined
+    }
+    createGrid(plan) {
+        const grid = []
+        plan.reduce(function (memo, el) {
+            memo = []
+            if (typeof el === "string") {
+                for (let i = 0; i < el.length; i++) {
+                    memo.push(this.obstacleFromSymbol(el[i]))
+                }
+                grid.push(memo)
+            } else grid.push([undefined])
+        }, 0)
+        return grid
     }
 }
