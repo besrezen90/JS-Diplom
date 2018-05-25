@@ -165,6 +165,6 @@ class LevelParser {
                 grid.push(memo)
             } else grid.push([undefined])
         }, 0)
-        return gri
+        return grid
     }
 }
