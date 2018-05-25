@@ -138,3 +138,20 @@ class Level {
         }
     }
 }
+//Создаем класс LevelParser
+
+class LevelParser {
+    constructor(symbol) {
+        this.symbol = symbol
+    }
+    actorFromSymbol(key) {
+        if (!key) return undefined
+        if (this.symbol[key]) return this.symbol[key]
+        else return undefined
+    }
+    obstacleFromSymbol(key) {
+        if(key === "x") return "wall"
+        if(key === "!") return "lava"
+        else return undefined
+    }
+}
