@@ -156,15 +156,15 @@ class LevelParser {
     }
     createGrid(plan) {
         const grid = []
-        plan.reduce(function (memo, el) {
-            memo = []
-            if (typeof el === "string") {
-                for (let i = 0; i < el.length; i++) {
-                    memo.push(this.obstacleFromSymbol(el[i]))
-                }
-                grid.push(memo)
-            } else grid.push([undefined])
-        }, 0)
-        return grid
+        if(plan.length === 0) return grid
+        for (let i = 0; i < plan.length; i++) {
+          const el = []
+          for (let j = 0; i < plan[i].length; j++) {
+            el.push(this.obstacleFromSymbol(plan[i][j]))
+          }
+          grid.push(el)
+          
+        }
+      return grid
     }
 }
