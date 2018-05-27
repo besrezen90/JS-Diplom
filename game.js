@@ -91,6 +91,7 @@ class Level {
             return this.actors.find(el => el.isIntersect(actor))
         }
     }
+    //Необходим рефакторинг
     obstacleAt(direction, size) {
         if (!(direction instanceof Vector)) {
             throw new TypeError(`${direction} не принадлежит классу Vector`)
@@ -154,21 +155,18 @@ class LevelParser {
         if (key === "!") return "lava"
         else return undefined
     }
+    //Необходим рефакторинг
     createGrid(plan) {
         const grid = []
-        if(plan.length === 0) return grid
+        if (plan.length === 0) return grid
         for (let i = 0; i < plan.length; i++) {
-          const el = []
-          for (let j = 0; j < plan[i].length; j++) {
-            el.push(this.obstacleFromSymbol(plan[i][j]))
-          }
-          grid.push(el)
-          
-        }
-      return grid
-    }
-    createActors() {
-        
-    }
+            const el = []
+            for (let j = 0; j < plan[i].length; j++) {
+                el.push(this.obstacleFromSymbol(plan[i][j]))
+            }
+            grid.push(el)
 
+        }
+        return grid
+    }
 }
