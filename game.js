@@ -187,4 +187,7 @@ class LevelParser {
         });
         return actors
     }
+    parse(plan) {
+        return new Level(this.createGrid(plan), this.createActors(plan))
+    }
 }
