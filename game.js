@@ -167,5 +167,8 @@ class LevelParser {
         }
       return grid
     }
-}
+    createActors() {
+        
+    }
 
+}
