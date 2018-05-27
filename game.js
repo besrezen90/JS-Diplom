@@ -191,3 +191,26 @@ class LevelParser {
         return new Level(this.createGrid(plan), this.createActors(plan))
     }
 }
+class Fireball extends Actor {
+    constructor(pos = new Vector, speed = new Vector()) {
+        super(pos, new Vector(1, 1), speed);
+    }
+    get type() {
+        return "fireball"
+    }
+    getNextPosition(time = 1) {
+        if (time) {
+            return new Vector(this.pos.x + (this.speed.x * time), this.pos.y + (this.speed.y * time))
+        }
+    }
+    handleObstacle() {
+        this.speed.x = -this.speed.x;
+        this.speed.y = -this.speed.y;
+    }
+    act(time, level) {
+        if (level.obstacleAt(this.getNextPosition(time), this.size) === undefined) {
+            this.pos = this.getNextPosition(time)
+        } else this.handleObstacle();
+
+    }
+}
