@@ -92,24 +92,20 @@ class Level {
         }
     }
     //Необходим рефакторинг
-    obstacleAt(direction, size) {
-        if (!(direction instanceof Vector)) {
-            throw new TypeError(`${direction} не принадлежит классу Vector`)
-        } else if (!(size instanceof Vector)) {
-            throw new TypeError(`${size} не принадлежит классу Vector`)
-        }
-        const newobj = new Actor(direction, size);
-        if (Math.ceil(newobj.bottom) > this.height) return "lava"
-        if (Math.floor(newobj.top) < 0 || Math.floor(newobj.left) < 0 || Math.ceil(newobj.right) > this.width) return "wall"
-        for (let y = 1; y < this.height; y++) {
-            for (let x = 1; x < this.width; x++) {
-                if (this.grid) {
-                    return this.grid[y][x]
-                }
+    obstacleAt(pos, size) {
+        if (!(pos instanceof Vector)) throw new TypeError(`${pos} не принадлежит классу Vector`)
+        else if (!(size instanceof Vector)) throw new TypeError(`${size} не принадлежит классу Vector`)
+        if ((pos.y + size.y) > this.height) return "lava"
+        if (pos.x < 0 || pos.y < 0 || (pos.x + size.x) > this.width) return "wall"
+        for (let y = Math.floor(pos.y); y < pos.y + size.y; y++) {
+            for (let x = Math.floor(pos.x); x < pos.x + size.x; x++) {
+                let obj = this.grid[y][x]
+                if (obj !== undefined) return obj
             }
         }
-
+        return undefined
     }
+
     removeActor(actor) {
         if (this.actors.indexOf(actor) >= 0) {
             this.actors.splice(this.actors.indexOf(actor), 1);
@@ -266,3 +262,21 @@ class Player extends Actor {
         return 'player'
     }
 }
+
+
+const actorDict = {
+    '@': Player,
+    'v': FireRain,
+    'o': Coin,
+    '|': VerticalFireball,
+    '=': HorizontalFireball
+}
+const parser = new LevelParser(actorDict);
+loadLevels()
+    .then(value => {
+            let schemas = JSON.parse(value);
+            runGame(schemas, parser, DOMDisplay)
+                .then(() => alert('Вы выиграли приз!'));
+        
+
+    })
