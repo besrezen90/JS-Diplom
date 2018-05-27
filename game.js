@@ -211,6 +211,5 @@ class Fireball extends Actor {
         if (level.obstacleAt(this.getNextPosition(time), this.size) === undefined) {
             this.pos = this.getNextPosition(time)
         } else this.handleObstacle();
-
     }
 }
