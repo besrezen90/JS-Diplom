@@ -248,7 +248,7 @@ class Coin extends Actor {
         this.spring = this.spring + (this.springSpeed * time)
     }
     getSpringVector() {
-        return new Vector (0, Math.sin(this.spring) * this.springDist)
+        return new Vector(0, Math.sin(this.spring) * this.springDist)
     }
     getNextPosition(time = 1) {
         this.updateSpring(time)
@@ -256,5 +256,13 @@ class Coin extends Actor {
     }
     act(time) {
         this.pos = this.getNextPosition(time)
+    }
+}
+class Player extends Actor {
+    constructor(pos = new Vector()) {
+        super(pos.plus(new Vector(0, -0.5)), new Vector(0.8, 1.5), new Vector(0, 0))
+    }
+    get type() {
+        return 'player'
     }
 }
