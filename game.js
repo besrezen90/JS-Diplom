@@ -192,7 +192,7 @@ class LevelParser {
     }
 }
 class Fireball extends Actor {
-    constructor(pos = new Vector, speed = new Vector()) {
+    constructor(pos = new Vector(), speed = new Vector()) {
         super(pos, new Vector(1, 1), speed);
     }
     get type() {
@@ -211,5 +211,50 @@ class Fireball extends Actor {
         if (level.obstacleAt(this.getNextPosition(time), this.size) === undefined) {
             this.pos = this.getNextPosition(time)
         } else this.handleObstacle();
+    }
+}
+class HorizontalFireball extends Fireball {
+    constructor(pos) {
+        super(pos, new Vector(2, 0))
+    }
+}
+class VerticalFireball extends Fireball {
+    constructor(pos) {
+        super(pos, new Vector(0, 2))
+    }
+}
+class FireRain extends Fireball {
+    constructor(pos) {
+        super(pos, new Vector(0, 3))
+        this.base = pos
+    }
+    handleObstacle() {
+        this.speed = this.speed
+        this.pos = this.base
+    }
+}
+class Coin extends Actor {
+    constructor(pos = new Vector()) {
+        super(pos.plus(new Vector(0.2, 0.1)), new Vector(0.6, 0.6));
+        this.springSpeed = 8
+        this.springDist = 0.07
+        this.spring = Math.random() * Math.PI * 2;
+        this.base = this.pos
+    }
+    get type() {
+        return "coin"
+    }
+    updateSpring(time = 1) {
+        this.spring = this.spring + (this.springSpeed * time)
+    }
+    getSpringVector() {
+        return new Vector (0, Math.sin(this.spring) * this.springDist)
+    }
+    getNextPosition(time = 1) {
+        this.updateSpring(time)
+        return this.base.plus(this.getSpringVector())
+    }
+    act(time) {
+        this.pos = this.getNextPosition(time)
     }
 }
