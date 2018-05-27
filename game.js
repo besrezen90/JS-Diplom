@@ -169,16 +169,22 @@ class LevelParser {
         }
         return grid
     }
-    /*
-    1) Принимает ['строка', 'строка' и тд] = plan
-    2) Проверяет длину plan => если равна 0 возвращает пустой массив
-    3) Перебирает строки из массива plan и запоминает номер index данной строки в массиве plan
-    4) Побуквенно перебирает строку => на каждый символ создает new Vector c Y - Index строки X - индекс буквы в строке
-    5) 
-    */
+    //Необходим рефакторинг
     createActors(plan) {
         const actors = []
         if (plan.length === 0) return actors
-
+        if (!this.symbol) return actors
+        plan.forEach((string, y) => {
+            for (let x = 0; x < string.length; x++) {
+                if (typeof this.symbol[string[x]] === 'function') {
+                    let Constr = Object(this.symbol[string[x]])
+                    let obj = new Constr(new Vector(x, y))
+                    if (obj instanceof Actor) {
+                        actors.push(obj)
+                    }
+                }
+            }
+        });
+        return actors
     }
 }
