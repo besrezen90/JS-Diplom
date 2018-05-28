@@ -1,3 +1,7 @@
+* {
+  margin: 0 auto;
+}
+
 hidden {
   display: none;
 }
@@ -18,6 +22,8 @@ hidden {
 
 .lava {
   background: rgb(255, 100, 100);
+  background-image: url(https://png.pngtree.com/thumb_back/fw800/back_pic/04/51/93/25585f67286e31c.jpg);
+  background-size: cover;
 }
 
 .elevator {
@@ -25,7 +31,8 @@ hidden {
 }
 
 .wall {
-  background: white;
+  background-image: url(http://bgfons.com/upload/stone_texture145.jpg);
+  background-size: cover;
 }
 
 .actor {
@@ -33,7 +40,8 @@ hidden {
 }
 
 .coin {
-  background: rgb(241, 229, 89);
+  background-image: url(https://avatanplus.com/files/resources/mid/57531424a32de1551c86af3c.png);
+  background-size: cover;
 }
 
 .player {
