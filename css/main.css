@@ -17,13 +17,20 @@ hidden {
 }
 
 .fireball {
-  background: rgb(255, 100, 100);
+  background-image: url(https://orig00.deviantart.net/1fad/f/2012/146/0/b/fire_ball_png_by_dbszabo1-d515um9.png);
+  background-size: cover;
+  /*background: rgb(255, 100, 100);*/
+  animation-name: fireballs;
+  animation-duration: 1.5s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: normal;
 }
 
 .lava {
-  /*background: rgb(255, 100, 100);*/
-  background-image: url(https://png.pngtree.com/thumb_back/fw800/back_pic/04/51/93/25585f67286e31c.jpg);
+  background-image: url(https://t7.rbxcdn.com/b55f3651ed8ad0041ca261519a86f7dd);
   background-size: cover;
+  /* background: rgb(255, 100, 100);*/
 }
 
 .elevator {
@@ -42,14 +49,20 @@ hidden {
 .coin {
   background-image: url(https://avatanplus.com/files/resources/mid/57531424a32de1551c86af3c.png);
   background-size: cover;
+  animation: coins 1.5s linear infinite alternate;
 }
 
 .player {
-  background: rgb(64, 64, 64);
+  background-image: url(http://u.cubeupload.com/besrezen90/player.png);
+  background-size: cover;
+  animation: player 0.5s linear infinite alternate;
+  /*background: rgb(64, 64, 64);*/
 }
 
 .lost .player {
-  background: rgb(160, 64, 64);
+  background-image: url(http://u.cubeupload.com/besrezen90/player.png);
+  background-size: cover;
+  /*background: rgb(160, 64, 64);*/
 }
 
 .won .player {
@@ -61,4 +74,31 @@ hidden {
   max-width: 600px;
   max-height: 450px;
   position: relative;
+}
+
+@keyframes coins {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0.1);
+  }
+}
+
+@keyframes fireballs {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes player {
+  from {
+    transform: matrix(1, 0, 0, 1, 0, 0);
+  }
+  to {
+    transform: matrix(0.95, 0, 0, 1.05, 0, -1);
+  }
 }
