@@ -1,74 +1,77 @@
 'use strict';
-//Создаем класс Vector
+
 class Vector {
     constructor(x = 0, y = 0) {
         this.x = x;
         this.y = y;
     }
+
     plus(newVector) {
-        if (Vector.prototype.isPrototypeOf(newVector)) {
-            let x = newVector.x + this.x
-            let y = newVector.y + this.y
-            return new Vector(x, y)
-        } else throw new TypeError("Можно прибавлять к вектору только вектор типа Vector")
+        if (!(Vector.prototype.isPrototypeOf(newVector))) {
+            throw new Error("Можно прибавлять к вектору только вектор типа Vector")
+        }
+        let x = newVector.x + this.x
+        let y = newVector.y + this.y
+        return new Vector(x, y)
     }
 
     times(mn = 1) {
         return new Vector(this.x * mn, this.y * mn)
     }
 }
-//Создаем класс Actor
+
 class Actor {
     constructor(pos = new Vector(), size = new Vector(1, 1), speed = new Vector()) {
-        if (Vector.prototype.isPrototypeOf(pos) && Vector.prototype.isPrototypeOf(size) && Vector.prototype.isPrototypeOf(speed)) {
-            this.pos = pos;
-            this.size = size;
-            this.speed = speed;
-        } else throw new TypeError("Можно прибавлять к вектору только вектор типа Vector")
+        if (!(Vector.prototype.isPrototypeOf(pos)) || !(Vector.prototype.isPrototypeOf(size)) || !(Vector.prototype.isPrototypeOf(speed))) {
+            throw new Error("Можно прибавлять к вектору только вектор типа Vector")
+        }
+        this.pos = pos;
+        this.size = size;
+        this.speed = speed;
     }
+
     act() {}
+
     get left() {
         return this.pos.x
     }
+
     get top() {
         return this.pos.y
     }
+
     get right() {
         return this.pos.x + this.size.x
     }
+
     get bottom() {
         return this.pos.y + this.size.y
     }
+
     get type() {
         return "actor"
     }
+
     isIntersect(actor) {
-        if (actor === undefined) throw new TypeError("actor не может быть равен undefined")
-        if (!(actor instanceof Actor)) throw new TypeError("actor не принадлежит классу Actor")
+        if (!(actor instanceof Actor)) throw new Error("actor не принадлежит классу Actor")
         if (this === actor) return false
-        else if (this.top >= actor.bottom || this.right <= actor.left || this.bottom <= actor.top || this.left >= actor.right) return false
-        else return true
+        return this.left < actor.right && this.right > actor.left && this.top < actor.bottom && this.bottom > actor.top;
     }
 }
-//Создаем класс Level
+
 class Level {
     constructor(grid = [], actors = []) {
         this.grid = grid
         this.actors = actors
         this.status = null
         this.finishDelay = 1
-        if (!(this.grid === undefined)) {
-            this.height = this.grid.length
-            this.width = this.grid.reduce(function (memo, el) {
-                if (el.length > memo) {
-                    memo = el.length
-                }
-                return memo
-            }, 0)
-        } else {
-            this.width = 0
-            this.height = 0
-        }
+        this.height = this.grid.length
+        this.width = this.grid.reduce(function (memo, el) {
+            if (el.length > memo) {
+                memo = el.length
+            }
+            return memo
+        }, 0);
         if (this.actors) {
             this.player = this.actors.reduce(function (memo, el) {
                 if (el.type === "player") {
@@ -78,23 +81,23 @@ class Level {
             }, 0)
         }
     }
+
     isFinished() {
-        if (!(this.status === null) && (this.finishDelay < 0)) {
-            return true
-        } else return false
+        return this.status !== null && this.finishDelay < 0
     }
+
     actorAt(actor) {
-        if (actor === undefined || !(actor instanceof Actor)) {
-            throw new TypeError(`Не передан движущийся объект`)
+        if (!(actor instanceof Actor)) {
+            throw new Error(`Не передан движущийся объект`)
         }
         if (this.actors.find(el => el.isIntersect(actor))) {
             return this.actors.find(el => el.isIntersect(actor))
         }
     }
-    //Необходим рефакторинг
+
     obstacleAt(pos, size) {
-        if (!(pos instanceof Vector)) throw new TypeError(`${pos} не принадлежит классу Vector`)
-        else if (!(size instanceof Vector)) throw new TypeError(`${size} не принадлежит классу Vector`)
+        if (!(pos instanceof Vector)) throw new Error(`${pos} не принадлежит классу Vector`)
+        else if (!(size instanceof Vector)) throw new Error(`${size} не принадлежит классу Vector`)
         if ((pos.y + size.y) > this.height) return "lava"
         if (pos.x < 0 || pos.y < 0 || (pos.x + size.x) > this.width) return "wall"
         for (let y = Math.floor(pos.y); y < pos.y + size.y; y++) {
@@ -103,7 +106,7 @@ class Level {
                 if (obj !== undefined) return obj
             }
         }
-        return undefined
+
     }
 
     removeActor(actor) {
@@ -111,15 +114,11 @@ class Level {
             this.actors.splice(this.actors.indexOf(actor), 1);
         }
     }
+
     noMoreActors(type) {
-        if (this.actors === undefined) return true
-        for (let actor of this.actors) {
-            if (actor.type === type) {
-                return false
-            }
-        }
-        return true
+        return !this.actors.some(elem => elem.type === type)
     }
+
     playerTouched(type, actor) {
         if (this.status !== null) {
             return;
@@ -135,23 +134,23 @@ class Level {
         }
     }
 }
-//Создаем класс LevelParser
 
 class LevelParser {
     constructor(symbol) {
         this.symbol = symbol
     }
+
     actorFromSymbol(key) {
         if (!key) return undefined
         if (this.symbol[key]) return this.symbol[key]
-        else return undefined
+
     }
+
     obstacleFromSymbol(key) {
         if (key === "x") return "wall"
         if (key === "!") return "lava"
-        else return undefined
     }
-    //Необходим рефакторинг
+
     createGrid(plan) {
         const grid = []
         if (plan.length === 0) return grid
@@ -165,7 +164,7 @@ class LevelParser {
         }
         return grid
     }
-    //Необходим рефакторинг
+
     createActors(plan) {
         const actors = []
         if (plan.length === 0) return actors
@@ -183,52 +182,63 @@ class LevelParser {
         });
         return actors
     }
+
     parse(plan) {
         return new Level(this.createGrid(plan), this.createActors(plan))
     }
 }
+
 class Fireball extends Actor {
     constructor(pos = new Vector(), speed = new Vector()) {
         super(pos, new Vector(1, 1), speed);
     }
+
     get type() {
         return "fireball"
     }
+
     getNextPosition(time = 1) {
         if (time) {
             return new Vector(this.pos.x + (this.speed.x * time), this.pos.y + (this.speed.y * time))
         }
     }
+
     handleObstacle() {
         this.speed.x = -this.speed.x;
         this.speed.y = -this.speed.y;
     }
+
     act(time, level) {
         if (level.obstacleAt(this.getNextPosition(time), this.size) === undefined) {
             this.pos = this.getNextPosition(time)
         } else this.handleObstacle();
     }
 }
+
 class HorizontalFireball extends Fireball {
     constructor(pos) {
         super(pos, new Vector(2, 0))
     }
 }
+
 class VerticalFireball extends Fireball {
     constructor(pos) {
         super(pos, new Vector(0, 2))
     }
 }
+
 class FireRain extends Fireball {
     constructor(pos) {
         super(pos, new Vector(0, 3))
         this.base = pos
     }
+
     handleObstacle() {
         this.speed = this.speed
         this.pos = this.base
     }
 }
+
 class Coin extends Actor {
     constructor(pos = new Vector()) {
         super(pos.plus(new Vector(0.2, 0.1)), new Vector(0.6, 0.6));
@@ -237,27 +247,34 @@ class Coin extends Actor {
         this.spring = Math.random() * Math.PI * 2;
         this.base = this.pos
     }
+
     get type() {
         return "coin"
     }
+
     updateSpring(time = 1) {
         this.spring = this.spring + (this.springSpeed * time)
     }
+
     getSpringVector() {
         return new Vector(0, Math.sin(this.spring) * this.springDist)
     }
+
     getNextPosition(time = 1) {
         this.updateSpring(time)
         return this.base.plus(this.getSpringVector())
     }
+
     act(time) {
         this.pos = this.getNextPosition(time)
     }
 }
+
 class Player extends Actor {
     constructor(pos = new Vector()) {
         super(pos.plus(new Vector(0, -0.5)), new Vector(0.8, 1.5), new Vector(0, 0))
     }
+
     get type() {
         return 'player'
     }
@@ -274,9 +291,9 @@ const actorDict = {
 const parser = new LevelParser(actorDict);
 loadLevels()
     .then(value => {
-            let schemas = JSON.parse(value);
-            runGame(schemas, parser, DOMDisplay)
-                .then(() => alert('Вы выиграли приз!'));
-        
+        let schemas = JSON.parse(value);
+        runGame(schemas, parser, DOMDisplay)
+            .then(() => alert('Вы выиграли приз!'));
+
 
     })
