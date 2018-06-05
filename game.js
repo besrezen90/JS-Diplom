@@ -294,6 +294,4 @@ loadLevels()
         let schemas = JSON.parse(value);
         runGame(schemas, parser, DOMDisplay)
             .then(() => alert('Вы выиграли приз!'));
-
-
     })
