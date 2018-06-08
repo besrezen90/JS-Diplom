@@ -73,12 +73,7 @@ class Level {
             return memo
         }, 0);
         if (this.actors) {
-            this.player = this.actors.reduce(function (memo, el) {
-                if (el.type === "player") {
-                    memo = el
-                }
-                return memo
-            }, 0)
+            this.player = this.actors.find(el => el.type === "player");
         }
     }
 
